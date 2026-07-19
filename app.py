@@ -2,6 +2,7 @@ import gradio as gr
 from dotenv import load_dotenv
 from research_manager import ResearchManager
 from styles import CSS, JS, EXAMPLES, HEADER_HTML
+import os
 
 load_dotenv(override=True)
 
@@ -23,7 +24,9 @@ with gr.Blocks(title="Deep Research") as ui:
             elem_id="dr-query",
             scale=5,
         )
-        run_button = gr.Button("Investigate", variant="primary", elem_id="dr-run", scale=1)
+        run_button = gr.Button(
+            "Investigate", variant="primary", elem_id="dr-run", scale=1
+        )
 
     gr.HTML('<div class="dr-examples-label">Try one</div>')
     gr.Examples(examples=EXAMPLES, inputs=query_textbox, elem_id="dr-examples")
@@ -35,4 +38,10 @@ with gr.Blocks(title="Deep Research") as ui:
 
 
 if __name__ == "__main__":
-    ui.launch(css=CSS, js=JS, theme=gr.themes.Base())
+    ui.launch(
+        server_name="0.0.0.0",
+        server_port=int(os.getenv("PORT", 7860)),
+        css=CSS,
+        js=JS,
+        theme=gr.themes.Base(),
+    )
